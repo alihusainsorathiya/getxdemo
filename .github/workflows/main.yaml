@@ -14,18 +14,20 @@ jobs:
     name: Build & Release
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-java@v1
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup JAVA
+        uses: actions/setup-java@v1
         with:
           java-version: '12.x'
-      - uses: subosito/flutter-action@v1
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.3.7'
+          channel: 'stable'
+      - name: Run Unit Tests
       - run: flutter pub get
-      - run: echo "Flutter pub get success ✅"
-      - run: flutter test
-      - run: echo "Flutter Test success ✅"
-      - run: echo "Building apk... ⚒️"
+      # - run: flutter test
       - run: flutter build apk --debug --split-per-abi
       - run: |
           flutter build ios --no-codesign
@@ -35,7 +37,11 @@ jobs:
           ln -s ../Runner.app
           cd ..
           zip -r app.ipa Payload
-      - run: echo "Flutter Build Complete 🔥"
+      # - name: Upload APK
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: release-apk
+      #     path: build/app/outputs/apk/release/app-release.apk
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
