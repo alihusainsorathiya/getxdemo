@@ -19,13 +19,12 @@ jobs:
       - name: Setup JAVA
         uses: actions/setup-java@v1
         with:
-          java-version: '12.x'
+          java-version: "12.x"
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.3.7'
-          channel: 'stable'
-      - name: Run Unit Tests
+          flutter-version: "3.3.7"
+          channel: "stable"
       - run: flutter pub get
       # - run: flutter test
       - run: flutter build apk --debug --split-per-abi
@@ -48,11 +47,5 @@ jobs:
           artifacts: "build/app/outputs/apk/debug/*,build/ios/iphoneos/app.ipa"
           tag: v1.0.${{ github.run_number }}
           token: ${{ secrets.TOKEN }}
-
-
-
-
-
-
 # push to master, main, develop
 # pull request on main master
